@@ -1,0 +1,211 @@
+[gd_scene load_steps=11 format=3 uid="uid://bh5qukhbtj3l8"]
+
+[ext_resource type="Script" uid="uid://dd6fbvly1gqn3" path="res://assets/scripts/ui/main/ui_manager.gd" id="2_tnjal"]
+[ext_resource type="Script" uid="uid://j5jautq0dnrk" path="res://assets/scripts/ui/main/ui_state.gd" id="3_qetjj"]
+[ext_resource type="Script" uid="uid://bj5ipmwm0axce" path="res://assets/scripts/ui/panels/menu/main_menu.gd" id="4_iuch6"]
+[ext_resource type="Script" uid="uid://di55ye4brjso0" path="res://addons/GodoverIt/overlay.gd" id="4_sfrgt"]
+
+[sub_resource type="InputEventAction" id="InputEventAction_us0cs"]
+action = &"ui_cancel"
+
+[sub_resource type="InputEventAction" id="InputEventAction_up4g2"]
+action = &"ui_accept"
+
+[sub_resource type="Shortcut" id="Shortcut_18urb"]
+events = [SubResource("InputEventAction_us0cs"), SubResource("InputEventAction_up4g2")]
+
+[sub_resource type="Animation" id="Animation_51twr"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("StartLabel:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_733yp"]
+resource_name = "loop_visible"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("StartLabel:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(0.5, 2, 0.5),
+"update": 1,
+"values": [true, false, true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_wec51"]
+_data = {
+&"RESET": SubResource("Animation_51twr"),
+&"loop_visible": SubResource("Animation_733yp")
+}
+
+[node name="Main" type="Node"]
+
+[node name="UiManager" type="Node" parent="." node_paths=PackedStringArray("canvas_layers")]
+script = ExtResource("2_tnjal")
+canvas_layers = [NodePath("Menu"), NodePath("Notification")]
+
+[node name="Menu" type="CanvasLayer" parent="UiManager"]
+
+[node name="Title" type="Panel" parent="UiManager/Menu"]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_qetjj")
+start = true
+can_go_back = false
+
+[node name="Title" type="Label" parent="UiManager/Menu/Title"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -448.0
+offset_top = -32.5
+offset_right = 448.0
+offset_bottom = 32.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 128
+text = "Title"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="StartLabel" type="Label" parent="UiManager/Menu/Title"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -256.0
+offset_top = -136.0
+offset_right = 256.0
+offset_bottom = -72.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 32
+text = "Tap to Start"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="StartButton" type="Button" parent="UiManager/Menu/Title"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+shortcut = SubResource("Shortcut_18urb")
+shortcut_in_tooltip = false
+flat = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="UiManager/Menu/Title"]
+libraries = {
+&"": SubResource("AnimationLibrary_wec51")
+}
+autoplay = "loop_visible"
+
+[node name="Menu" type="Panel" parent="UiManager/Menu" node_paths=PackedStringArray("overlay")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("4_iuch6")
+overlay = NodePath("../../../OverlayNode")
+can_go_back = false
+
+[node name="Title" type="Label" parent="UiManager/Menu/Menu"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -320.0
+offset_top = 128.0
+offset_right = 320.0
+offset_bottom = 192.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 64
+text = "Title"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VersionLabel" type="Label" parent="UiManager/Menu/Menu"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -328.0
+offset_top = -120.0
+offset_right = -8.0
+offset_bottom = -8.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(1, 1, 1, 0.196078)
+text = "Version Info"
+horizontal_alignment = 2
+vertical_alignment = 2
+autowrap_mode = 2
+
+[node name="Buttons" type="VBoxContainer" parent="UiManager/Menu/Menu"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -192.0
+offset_top = -28.0
+offset_right = 192.0
+offset_bottom = 244.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="PlayButton" type="Button" parent="UiManager/Menu/Menu/Buttons"]
+layout_mode = 2
+focus_neighbor_bottom = NodePath("../SettingsButton")
+theme_override_font_sizes/font_size = 48
+text = "Play"
+
+[node name="SettingsButton" type="Button" parent="UiManager/Menu/Menu/Buttons"]
+layout_mode = 2
+focus_neighbor_bottom = NodePath("../QuitButton")
+theme_override_font_sizes/font_size = 48
+text = "Settings"
+
+[node name="QuitButton" type="Button" parent="UiManager/Menu/Menu/Buttons"]
+layout_mode = 2
+focus_neighbor_top = NodePath("../SettingsButton")
+theme_override_font_sizes/font_size = 48
+text = "Quit"
+
+[node name="Notification" type="CanvasLayer" parent="UiManager"]
+visible = false
+
+[node name="OverlayNode" type="Node" parent="."]
+script = ExtResource("4_sfrgt")
+metadata/_custom_type_script = "uid://di55ye4brjso0"
+
+[connection signal="pressed" from="UiManager/Menu/Title/StartButton" to="UiManager/Menu/Title" method="transition" binds= ["menu"]]
+[connection signal="pressed" from="UiManager/Menu/Menu/Buttons/PlayButton" to="UiManager/Menu/Menu" method="button_pressed" binds= ["play"]]

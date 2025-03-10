@@ -1,0 +1,8 @@
+[configuration]
+entry_symbol = "overlay_init"
+compatibility_minimum = "4.4"
+reloadable = true
+
+[libraries]
+windows.debug.x86_64 = "res://addons/GodoverIt/bin/overlay.dll"
+windows.release.x86_64 = "res://addons/GodoverIt/bin/overlay.dll"
