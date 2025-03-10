@@ -1,0 +1,36 @@
+#!/usr/bin/env python
+import os
+import sys
+
+# Load the godot-cpp SConstruct environment
+env = SConscript("godot-cpp/SConstruct")
+
+# For reference:
+# - CCFLAGS are compilation flags shared between C and C++
+# - CFLAGS are for C-specific compilation flags
+# - CXXFLAGS are for C++-specific compilation flags
+# - CPPFLAGS are for pre-processor flags
+# - CPPDEFINES are for pre-processor defines
+# - LINKFLAGS are for linking flags
+
+# Add the source directory to the include path
+env.Append(CPPPATH=["src/"])
+
+# Gather all .cpp files in the src/ directory
+sources = Glob("src/*.cpp")
+
+# Add user32.lib for Windows API functions
+env.Append(LIBS=["user32"])
+
+# Add gdi32.lib to the linker
+env.Append(LIBS=['gdi32'])
+
+# Build the shared library
+library = env.SharedLibrary(
+    # Output the library to the bin/ folder with the appropriate name
+    "bin/overlay{}{}".format(env["suffix"], env["SHLIBSUFFIX"]),
+    source=sources,
+)
+
+# Set the library as the default target
+Default(library)

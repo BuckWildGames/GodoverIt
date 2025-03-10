@@ -16,14 +16,6 @@ run/main_scene="uid://bh5qukhbtj3l8"
 config/features=PackedStringArray("4.4", "GL Compatibility")
 config/icon="res://icon.svg"
 
-[autoload]
-
-ConfigManager="*res://assets/scripts/autoloaders/config_manager.gd"
-DebugManager="*res://assets/scripts/autoloaders/debug_manager.gd"
-FileManager="*res://assets/scripts/autoloaders/file_manager.gd"
-NotificationManager="*res://assets/scripts/autoloaders/notification_manager.gd"
-SignalBus="*res://assets/scripts/autoloaders/signal_bus.gd"
-
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/GodoverIt/plugin.cfg")

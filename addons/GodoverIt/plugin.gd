@@ -25,7 +25,9 @@ func add_input_action(action_name: String, keycode: Key) -> void:
 		return
 	# Create InputEventKey and set it up
 	var event := InputEventKey.new()
-	event.set_physical_keycode(keycode)
+	event.set_keycode(keycode)
+	event.set_ctrl_pressed(true)
+	event.set_pressed(true)
 	# Add the action to the InputMap
 	input_map.add_action(action_name)
 	input_map.action_add_event(action_name, event)

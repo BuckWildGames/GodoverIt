@@ -185,7 +185,7 @@ func _forward_to_signal_bus() -> void:
 
 
 func _debugger(debug_message: String) -> void:
-	DebugManager.log_debug(debug_message, str(get_script().get_path()))
+	#DebugManager.log_debug(debug_message, str(get_script().get_path()))
 	# Check if script is debug
 	if DEBUGGER == true:
 		# Check if os debug on

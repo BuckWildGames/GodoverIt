@@ -144,7 +144,7 @@ offset_right = 320.0
 offset_bottom = 192.0
 grow_horizontal = 2
 theme_override_font_sizes/font_size = 64
-text = "Title"
+text = "GodoverIt"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -182,23 +182,19 @@ grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
 
-[node name="PlayButton" type="Button" parent="UiManager/Menu/Menu/Buttons"]
+[node name="OverlayButton" type="Button" parent="UiManager/Menu/Menu/Buttons"]
 layout_mode = 2
-focus_neighbor_bottom = NodePath("../SettingsButton")
 theme_override_font_sizes/font_size = 48
-text = "Play"
+text = "Overlay"
 
-[node name="SettingsButton" type="Button" parent="UiManager/Menu/Menu/Buttons"]
+[node name="Label" type="Label" parent="UiManager/Menu/Menu/Buttons"]
+visible = false
 layout_mode = 2
-focus_neighbor_bottom = NodePath("../QuitButton")
-theme_override_font_sizes/font_size = 48
-text = "Settings"
+text = "Default Keybinds:
 
-[node name="QuitButton" type="Button" parent="UiManager/Menu/Menu/Buttons"]
-layout_mode = 2
-focus_neighbor_top = NodePath("../SettingsButton")
-theme_override_font_sizes/font_size = 48
-text = "Quit"
+CTRL + F1 = toggle input
+CTRL + F2 = toggle visibility"
+horizontal_alignment = 1
 
 [node name="Notification" type="CanvasLayer" parent="UiManager"]
 visible = false
@@ -208,4 +204,4 @@ script = ExtResource("4_sfrgt")
 metadata/_custom_type_script = "uid://di55ye4brjso0"
 
 [connection signal="pressed" from="UiManager/Menu/Title/StartButton" to="UiManager/Menu/Title" method="transition" binds= ["menu"]]
-[connection signal="pressed" from="UiManager/Menu/Menu/Buttons/PlayButton" to="UiManager/Menu/Menu" method="button_pressed" binds= ["play"]]
+[connection signal="pressed" from="UiManager/Menu/Menu/Buttons/OverlayButton" to="UiManager/Menu/Menu" method="button_pressed" binds= ["overlay"]]

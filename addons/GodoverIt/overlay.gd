@@ -3,12 +3,12 @@ extends Node
 # Reference to the native Overlay class
 var overlay: Overlay
 
+var modifier: Key = KEY_CTRL
 var input_key: Key = KEY_F1
 var visibility_key: Key = KEY_F2
 var keybinds_found: bool = false
 
 func _ready() -> void:
-	set_process(false)
 	# Load the input map
 	_get_keybinds()
 	# Load the native library
@@ -28,11 +28,13 @@ func _get_keybinds() -> void:
 		if action in target_actions:
 			if "input" in action:
 				var events = InputMap.action_get_events(action)
-				input_key = events[0].get_physical_keycode()
+				input_key = events[0].get_keycode()
+				modifier = _get_modifier(events[0])
 				find[0] = true
 			elif "visibility" in action:
 				var events = InputMap.action_get_events(action)
-				visibility_key = events[0].get_physical_keycode()
+				visibility_key = events[0].get_keycode()
+				modifier = _get_modifier(events[0])
 				find[1] = true
 	if find[0] and find[1]:
 		keybinds_found = true
@@ -42,12 +44,31 @@ func _get_keybinds() -> void:
 		print("Keybinds not found")
 
 
+func _get_modifier(event: InputEvent) -> Key:
+	if event.is_ctrl_pressed():
+		return KEY_CTRL
+	elif event.is_alt_pressed():
+		return KEY_ALT
+	elif event.is_shift_pressed():
+		return KEY_SHIFT
+	return KEY_NONE
+
+
 func _set_keybinds() -> void:
-	var key_event = InputEventKey.new()
-	key_event.set_keycode(input_key)
-	overlay.set_input_keybind(key_event)
-	key_event.set_keycode(visibility_key)
-	overlay.set_visibility_keybind(key_event)
+	var input_event = InputEventKey.new()
+	input_event.set_keycode(input_key)
+	input_event.set_pressed(true)
+	input_event.set_ctrl_pressed(modifier == KEY_CTRL)
+	input_event.set_alt_pressed(modifier == KEY_ALT)
+	input_event.set_shift_pressed(modifier == KEY_SHIFT)
+	overlay.set_input_keybind(input_event)
+	var visibility_event = InputEventKey.new()
+	visibility_event.set_keycode(visibility_key)
+	visibility_event.set_pressed(true)
+	visibility_event.set_ctrl_pressed(modifier == KEY_CTRL)
+	visibility_event.set_alt_pressed(modifier == KEY_ALT)
+	visibility_event.set_shift_pressed(modifier == KEY_SHIFT)
+	overlay.set_visibility_keybind(visibility_event)
 
 
 func _process(delta: float) -> void:
@@ -61,18 +82,6 @@ func _exit_tree() -> void:
 	if overlay:
 		disable_overlay()
 		overlay.call_deferred("free")
-
-
-func start_background_thread() -> void:
-	if overlay:
-		set_process(false)
-		overlay.start_background_thread()
-
-
-func stop_background_thread() -> void:
-	if overlay:
-		set_process(true)
-		overlay.stop_background_thread()
 
 
 func set_input_keybind(event: InputEvent) -> void:
